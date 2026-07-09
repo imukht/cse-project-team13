@@ -1,0 +1,131 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #ffffff;
+  color: #90c226;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  color: #90c226;
+}
+
+.page {
+  width: min(100%, 420px);
+  padding: 24px;
+}
+
+.login-card {
+  background: #ffffff;
+  border: 2px solid #90c226;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(144, 194, 38, 0.15);
+}
+
+.brand {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.logo {
+  width: 96px;
+  height: auto;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.brand h1 {
+  margin: 0 0 8px;
+  font-size: 1.8rem;
+  color: #90c226;
+}
+
+.brand p {
+  margin: 0 0 24px;
+  color: #90c226;
+}
+
+.login-form {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+  color: #90c226;
+}
+
+.field input {
+  padding: 12px 14px;
+  border: 1px solid #90c226;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #90c226;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input::placeholder {
+  color: #90c226;
+  opacity: 0.7;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #90c226;
+  box-shadow: 0 0 0 3px rgba(144, 194, 38, 0.2);
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #90c226;
+  font-size: 0.95rem;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  background: #90c226;
+  color: #ffffff;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(144, 194, 38, 0.2);
+}
+
+.footer-text {
+  margin-top: 18px;
+  text-align: center;
+  color: #90c226;
+}
+
+.footer-text a {
+  color: #90c226;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 24px;
+  }
+}
