@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings | Embark</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="home-shell">
+      <header class="home-header">
+        <div class="brand-block">
+          <img src="logo.png" alt="Embark logo" class="logo" />
+          <div>
+            <p class="eyebrow">Settings</p>
+            <h1>Preferences</h1>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero-card" aria-labelledby="settings-title">
+        <div>
+          <p class="eyebrow">Customize your experience</p>
+          <h2 id="settings-title">Adjust your layout, alerts, and visibility preferences for your dog profiles.</h2>
+        </div>
+      </section>
+
+      <section class="dog-list" aria-label="Settings options">
+        <article class="info-card">
+          <h3>Preferences</h3>
+          <form id="preferences-form" class="editor-form">
+            <label>
+              <span>Display</span>
+              <select name="display">
+                <option value="Grid">Grid</option>
+                <option value="List">List</option>
+              </select>
+            </label>
+            <label>
+              <span>Privacy</span>
+              <select name="privacy">
+                <option value="Shared with breeder network">Shared with breeder network</option>
+                <option value="Private">Private</option>
+              </select>
+            </label>
+            <label>
+              <span>Default view</span>
+              <select name="defaultView">
+                <option value="Grid">Grid</option>
+                <option value="List">List</option>
+              </select>
+            </label>
+            <div class="form-actions">
+              <button type="submit">Save Preferences</button>
+            </div>
+            <p id="preferences-status" class="form-status"></p>
+          </form>
+        </article>
+      </section>
+
+      <nav class="bottom-nav" aria-label="Primary">
+        <a class="nav-item" href="homepage.html">Home</a>
+        <a class="nav-item" href="saved-dogs.html">Saved Dogs</a>
+        <a class="nav-item" href="pedigrees.html">Pedigrees</a>
+        <a class="nav-item" href="profile.html">Profile</a>
+      </nav>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

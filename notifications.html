@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications | Embark</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="home-shell">
+      <header class="home-header">
+        <div class="brand-block">
+          <img src="logo.png" alt="Embark logo" class="logo" />
+          <div>
+            <p class="eyebrow">Notifications</p>
+            <h1>Updates</h1>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero-card" aria-labelledby="notifications-title">
+        <div>
+          <p class="eyebrow">Stay informed</p>
+          <h2 id="notifications-title">Review new pedigree updates, saved dog activity, and reminders.</h2>
+        </div>
+      </section>
+
+      <section class="dog-list" aria-label="Notification list">
+        <article class="info-card">
+          <h3>Notification Settings</h3>
+          <form id="notification-form" class="editor-form">
+            <label class="checkbox-row">
+              <input type="checkbox" name="email" />
+              <span>Email alerts</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="inApp" />
+              <span>In-app alerts</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="pedigreeUpdates" />
+              <span>Pedigree updates</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="reminders" />
+              <span>Reminders</span>
+            </label>
+            <div class="form-actions">
+              <button type="submit">Save Notifications</button>
+            </div>
+            <p id="notification-status" class="form-status"></p>
+          </form>
+        </article>
+      </section>
+
+      <nav class="bottom-nav" aria-label="Primary">
+        <a class="nav-item" href="homepage.html">Home</a>
+        <a class="nav-item" href="saved-dogs.html">Saved Dogs</a>
+        <a class="nav-item" href="pedigrees.html">Pedigrees</a>
+        <a class="nav-item" href="profile.html">Profile</a>
+      </nav>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

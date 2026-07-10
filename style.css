@@ -112,6 +112,253 @@ button:hover {
   box-shadow: 0 10px 20px rgba(144, 194, 38, 0.2);
 }
 
+.home-shell {
+  width: min(100%, 960px);
+  padding: 24px;
+  display: grid;
+  gap: 20px;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-block .logo {
+  width: 64px;
+  margin-bottom: 0;
+}
+
+.brand-block h1,
+.brand-block p {
+  margin: 0;
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  color: #90c226;
+  border: 1px solid #90c226;
+}
+
+.hero-card {
+  background: #ffffff;
+  border: 2px solid #90c226;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 10px 30px rgba(144, 194, 38, 0.12);
+}
+
+.hero-card h2 {
+  margin: 4px 0 0;
+  color: #90c226;
+  font-size: 1.2rem;
+}
+
+.primary-btn {
+  white-space: nowrap;
+}
+
+.dog-list {
+  display: grid;
+  gap: 16px;
+}
+
+.dog-card {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid #90c226;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(144, 194, 38, 0.1);
+}
+
+.dog-card img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.dog-info h3 {
+  margin: 0 0 8px;
+  color: #90c226;
+}
+
+.dog-info p {
+  margin: 0 0 6px;
+  color: #90c226;
+}
+
+.info-card {
+  background: #ffffff;
+  border: 1px solid #90c226;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(144, 194, 38, 0.1);
+}
+
+.info-card h3 {
+  margin-top: 0;
+  color: #90c226;
+}
+
+.info-card p {
+  margin: 0 0 8px;
+  color: #90c226;
+}
+
+.editor-form {
+  display: grid;
+  gap: 10px;
+}
+
+.editor-form label,
+.editor-form .checkbox-row {
+  display: grid;
+  gap: 6px;
+  color: #90c226;
+  font-weight: 600;
+}
+
+.editor-form input,
+.editor-form select,
+.editor-form textarea {
+  padding: 10px 12px;
+  border: 1px solid #90c226;
+  border-radius: 10px;
+  font: inherit;
+  color: #90c226;
+}
+
+.editor-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.checkbox-row {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.form-status {
+  min-height: 1.2em;
+  margin: 0;
+  color: #90c226;
+  font-size: 0.95rem;
+}
+
+.form-status.error {
+  color: #b42318;
+}
+
+.hidden {
+  display: none;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.small-btn {
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}
+
+.inline-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state {
+  color: #90c226;
+  text-align: center;
+  padding: 20px;
+  border: 1px dashed #90c226;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.secondary-btn {
+  margin-top: 8px;
+  background: #ffffff;
+  color: #90c226;
+  border: 1px solid #90c226;
+}
+
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 8px;
+  border: 1px solid #90c226;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(144, 194, 38, 0.1);
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #90c226;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 999px;
+}
+
+.nav-item.active {
+  background: #90c226;
+  color: #ffffff;
+}
+
 .footer-text {
   margin-top: 18px;
   text-align: center;
@@ -127,5 +374,27 @@ button:hover {
 @media (max-width: 480px) {
   .login-card {
     padding: 24px;
+  }
+
+  .home-shell {
+    padding: 16px;
+  }
+
+  .hero-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dog-card {
+    grid-template-columns: 1fr;
+  }
+
+  .dog-card img {
+    height: 180px;
+  }
+
+  .bottom-nav {
+    gap: 4px;
+    font-size: 0.9rem;
   }
 }
