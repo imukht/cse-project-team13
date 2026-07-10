@@ -36,23 +36,51 @@
       <section class="dog-list" aria-label="Profile details">
         <article class="info-card">
           <h3>Owner Info</h3>
+          <p class="helper-text">Name and number of dogs listed are displayed here and cannot be edited directly.</p>
           <form method="post" class="editor-form">
             <label>
               <span>Name</span>
-              <input type="text" name="name" value="{{ user['full_name'] }}" required />
+              <input type="text" name="name" value="{{ user['full_name'] }}" readonly />
             </label>
             <label>
               <span>Email</span>
-              <input type="email" name="email" value="{{ user['email'] }}" required />
+              <input type="email" name="email" value="{{ user['email'] }}" readonly />
             </label>
             <label>
               <span>Dogs Listed</span>
-              <input type="number" name="dogsListed" min="0" value="{{ user['dogs_count'] }}" required />
+              <input type="number" name="dogsListed" min="0" value="{{ user['dogs_count'] }}" readonly />
             </label>
             <div class="form-actions">
-              <button type="submit">Save Profile</button>
+              <button type="submit" name="action" value="show-change-form">Change Account Details</button>
             </div>
           </form>
+
+          {% if show_change_form %}
+            <form method="post" class="editor-form" style="margin-top: 16px;">
+              <input type="hidden" name="action" value="confirm-account-change" />
+              <label>
+                <span>Current Password</span>
+                <input type="password" name="current_password" required />
+              </label>
+              <label>
+                <span>New Email (optional)</span>
+                <input type="email" name="new_email" />
+              </label>
+              <label>
+                <span>New Password (optional)</span>
+                <input type="password" name="new_password" />
+              </label>
+              <label>
+                <span>Confirm New Password</span>
+                <input type="password" name="confirm_password" />
+              </label>
+              <p class="helper-text">Password rules: at least 8 characters, one capital letter, and one special character.</p>
+              <div class="form-actions">
+                <button type="submit">Confirm Changes</button>
+                <button type="submit" name="action" value="cancel-change" class="secondary-btn">Cancel</button>
+              </div>
+            </form>
+          {% endif %}
         </article>
       </section>
 

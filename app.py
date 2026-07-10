@@ -7,10 +7,60 @@ from functools import wraps
 
 from flask import Flask, flash, g, redirect, render_template, request, send_file, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "embark-secret-key")
 DB_PATH = os.path.join(os.path.dirname(__file__), "embark.db")
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "static", "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+DEFAULT_DOG_PHOTO = "/static/default-dog.svg"
+BREED_OPTIONS = [
+    "Affenpinscher",
+    "Akita",
+    "Alaskan Malamute",
+    "American Bulldog",
+    "American Eskimo Dog",
+    "American Staffordshire Terrier",
+    "Australian Shepherd",
+    "Basset Hound",
+    "Beagle",
+    "Bernese Mountain Dog",
+    "Bichon Frise",
+    "Border Collie",
+    "Boston Terrier",
+    "Boxer",
+    "Bulldog",
+    "Cane Corso",
+    "Cavalier King Charles Spaniel",
+    "Chihuahua",
+    "Chow Chow",
+    "Cocker Spaniel",
+    "Collie",
+    "Dachshund",
+    "Dalmatian",
+    "Doberman Pinscher",
+    "English Bulldog",
+    "English Springer Spaniel",
+    "French Bulldog",
+    "German Shepherd",
+    "Golden Retriever",
+    "Great Dane",
+    "Greyhound",
+    "Havanese",
+    "Husky",
+    "Labrador Retriever",
+    "Maltese",
+    "Miniature Schnauzer",
+    "Poodle",
+    "Pug",
+    "Rottweiler",
+    "Siberian Husky",
+    "Shih Tzu",
+    "Weimaraner",
+    "Yorkshire Terrier",
+]
 
 
 def get_db():
@@ -155,6 +205,18 @@ def password_meets_requirements(password):
 
 def normalize_email(email):
     return email.strip().lower()
+
+
+def save_uploaded_photo(file_storage):
+    if not file_storage or not getattr(file_storage, "filename", ""):
+        return None
+    filename = secure_filename(file_storage.filename)
+    if not filename:
+        return None
+    unique_name = f"{secrets.token_hex(8)}_{filename}"
+    path = os.path.join(app.config["UPLOAD_FOLDER"], unique_name)
+    file_storage.save(path)
+    return f"/static/uploads/{unique_name}"
 
 
 def create_verification_token():
@@ -303,6 +365,10 @@ def homepage():
             flash("Please complete all required dog fields.", "error")
             return redirect(url_for("homepage"))
 
+        photo_value = save_uploaded_photo(request.files.get("photo_file"))
+        if not photo_value:
+            photo_value = request.form.get("photo", "").strip() or DEFAULT_DOG_PHOTO
+
         db = get_db()
         db.execute(
             "INSERT INTO dogs (owner_id, name, breed, birthdate, sex, photo, is_saved, father, mother, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -312,7 +378,7 @@ def homepage():
                 breed,
                 birthdate,
                 sex,
-                request.form.get("photo", "") or "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80",
+                photo_value,
                 0,
                 "",
                 "",
@@ -326,7 +392,7 @@ def homepage():
 
     db = get_db()
     dogs = db.execute("SELECT * FROM dogs WHERE owner_id = ? ORDER BY id DESC", (session["user_id"],)).fetchall()
-    return render_template("homepage.html", dogs=dogs, active_page="home")
+    return render_template("homepage.html", dogs=dogs, breed_options=BREED_OPTIONS, active_page="home")
 
 
 @app.route("/saved-dogs")
@@ -348,19 +414,64 @@ def pedigrees():
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    if request.method == "POST":
-        db = get_db()
-        full_name = request.form.get("name", "").strip()
-        email = normalize_email(request.form.get("email", ""))
-        dogs_count = int(request.form.get("dogsListed", 0) or 0)
-        db.execute("UPDATE users SET full_name = ?, email = ?, dogs_count = ? WHERE id = ?", (full_name, email, dogs_count, session["user_id"]))
-        db.commit()
-        flash("Profile updated successfully.", "success")
-        return redirect(url_for("profile"))
-
     db = get_db()
-    user = db.execute("SELECT id, full_name, email, dogs_count FROM users WHERE id = ?", (session["user_id"],)).fetchone()
-    return render_template("profile.html", user=user, active_page="profile")
+    user = db.execute("SELECT id, full_name, email, dogs_count, password_hash FROM users WHERE id = ?", (session["user_id"],)).fetchone()
+    show_change_form = request.args.get("show_change_form") == "1" or request.form.get("action") == "show-change-form"
+
+    if request.method == "POST":
+        action = request.form.get("action")
+        if action == "show-change-form":
+            show_change_form = True
+            return render_template("profile.html", user=user, show_change_form=show_change_form, active_page="profile")
+
+        if action == "cancel-change":
+            return redirect(url_for("profile"))
+
+        if action == "confirm-account-change":
+            current_password = request.form.get("current_password", "")
+            new_email = normalize_email(request.form.get("new_email", ""))
+            new_password = request.form.get("new_password", "")
+            confirm_password = request.form.get("confirm_password", "")
+
+            if not check_password_hash(user["password_hash"], current_password):
+                flash("Current password is incorrect.", "error")
+                return redirect(url_for("profile", show_change_form="1"))
+
+            if not new_email and not new_password:
+                flash("Please enter an email address or a new password to update.", "error")
+                return redirect(url_for("profile", show_change_form="1"))
+
+            if new_password:
+                if new_password != confirm_password:
+                    flash("New passwords do not match.", "error")
+                    return redirect(url_for("profile", show_change_form="1"))
+                if not password_meets_requirements(new_password):
+                    flash("New password must be at least 8 characters, include a capital letter, and a special character.", "error")
+                    return redirect(url_for("profile", show_change_form="1"))
+
+            if new_email and new_email != user["email"]:
+                existing = db.execute("SELECT id FROM users WHERE email = ? AND id != ?", (new_email, session["user_id"])).fetchone()
+                if existing:
+                    flash("That email address is already in use.", "error")
+                    return redirect(url_for("profile", show_change_form="1"))
+
+            updates = []
+            values = []
+            if new_email:
+                updates.append("email = ?")
+                values.append(new_email)
+            if new_password:
+                updates.append("password_hash = ?")
+                values.append(generate_password_hash(new_password))
+            if updates:
+                values.extend([session["user_id"]])
+                db.execute(f"UPDATE users SET {', '.join(updates)} WHERE id = ?", values)
+                db.commit()
+
+            flash("Account details updated successfully.", "success")
+            return redirect(url_for("profile"))
+
+    return render_template("profile.html", user=user, show_change_form=show_change_form, active_page="profile")
 
 
 @app.route("/notifications", methods=["GET", "POST"])
@@ -414,6 +525,11 @@ def settings():
 @login_required
 def edit_dog(dog_id):
     db = get_db()
+    existing = db.execute("SELECT photo FROM dogs WHERE id = ? AND owner_id = ?", (dog_id, session["user_id"])).fetchone()
+    photo_value = save_uploaded_photo(request.files.get("photo_file"))
+    if not photo_value:
+        photo_value = request.form.get("photo", "").strip() or (existing["photo"] if existing else DEFAULT_DOG_PHOTO)
+
     db.execute(
         "UPDATE dogs SET name = ?, breed = ?, birthdate = ?, sex = ?, photo = ? WHERE id = ? AND owner_id = ?",
         (
@@ -421,7 +537,7 @@ def edit_dog(dog_id):
             request.form.get("breed", "").strip(),
             request.form.get("birthdate", ""),
             request.form.get("sex", "").strip(),
-            request.form.get("photo", "") or "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80",
+            photo_value,
             dog_id,
             session["user_id"],
         ),

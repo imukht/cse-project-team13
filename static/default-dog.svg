@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" rx="24" fill="#f7f7e8"/>
+  <circle cx="200" cy="118" r="72" fill="#d8b37b"/>
+  <rect x="124" y="162" width="152" height="78" rx="38" fill="#8c5a2b"/>
+  <rect x="148" y="110" width="24" height="40" rx="10" fill="#5f3d1d"/>
+  <rect x="228" y="110" width="24" height="40" rx="10" fill="#5f3d1d"/>
+  <path d="M168 104c10-22 54-22 64 0" stroke="#5f3d1d" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M134 192c24 14 108 14 132 0" stroke="#6b4b26" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <text x="200" y="264" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="26" fill="#90c226">Default dog photo</text>
+</svg>
