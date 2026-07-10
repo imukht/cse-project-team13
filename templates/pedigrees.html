@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedigrees | Embark</title>
+    <link rel="stylesheet" href="{{ url_for('style_css') }}" />
+  </head>
+  <body>
+    <main class="home-shell">
+      <header class="home-header">
+        <div class="brand-block">
+          <img src="{{ url_for('logo_png') }}" alt="Embark logo" class="logo" />
+          <div>
+            <p class="eyebrow">Pedigrees</p>
+            <h1>Bloodline Maps</h1>
+          </div>
+        </div>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <p class="flash {{ category }}">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <section class="hero-card" aria-labelledby="pedigree-title">
+        <div>
+          <p class="eyebrow">Lineage tracking</p>
+          <h2 id="pedigree-title">Review ancestry, champions, and breeding history for each dog.</h2>
+        </div>
+      </section>
+
+      <section class="dog-list" aria-label="Pedigree summaries">
+        {% for dog in dogs %}
+          <article class="info-card">
+            <h3>{{ dog['name'] }}</h3>
+            <p><strong>Father:</strong> {{ dog['father'] or 'Not listed' }}</p>
+            <p><strong>Mother:</strong> {{ dog['mother'] or 'Not listed' }}</p>
+            <p><strong>Notes:</strong> {{ dog['notes'] or 'No notes yet.' }}</p>
+            <form method="post" action="{{ url_for('update_pedigree', dog_id=dog['id']) }}" class="editor-form">
+              <label>
+                <span>Father</span>
+                <input type="text" name="father" value="{{ dog['father'] }}" />
+              </label>
+              <label>
+                <span>Mother</span>
+                <input type="text" name="mother" value="{{ dog['mother'] }}" />
+              </label>
+              <label>
+                <span>Notes</span>
+                <textarea name="notes">{{ dog['notes'] }}</textarea>
+              </label>
+              <div class="form-actions">
+                <button type="submit">Save</button>
+              </div>
+            </form>
+          </article>
+        {% else %}
+          <p class="empty-state">No pedigree records yet.</p>
+        {% endfor %}
+      </section>
+
+      <nav class="bottom-nav" aria-label="Primary">
+        <a class="nav-item" href="{{ url_for('homepage') }}">Home</a>
+        <a class="nav-item" href="{{ url_for('saved_dogs') }}">Saved Dogs</a>
+        <a class="nav-item active" href="{{ url_for('pedigrees') }}">Pedigrees</a>
+        <a class="nav-item" href="{{ url_for('profile') }}">Profile</a>
+      </nav>
+    </main>
+  </body>
+</html>

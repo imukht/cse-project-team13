@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications | Embark</title>
+    <link rel="stylesheet" href="{{ url_for('style_css') }}" />
+  </head>
+  <body>
+    <main class="home-shell">
+      <header class="home-header">
+        <div class="brand-block">
+          <img src="{{ url_for('logo_png') }}" alt="Embark logo" class="logo" />
+          <div>
+            <p class="eyebrow">Notifications</p>
+            <h1>Updates</h1>
+          </div>
+        </div>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <p class="flash {{ category }}">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <section class="hero-card" aria-labelledby="notifications-title">
+        <div>
+          <p class="eyebrow">Stay informed</p>
+          <h2 id="notifications-title">Review new pedigree updates, saved dog activity, and reminders.</h2>
+        </div>
+      </section>
+
+      <section class="dog-list" aria-label="Notification list">
+        <article class="info-card">
+          <h3>Notification Settings</h3>
+          <form method="post" class="editor-form">
+            <label class="checkbox-row">
+              <input type="checkbox" name="email" {% if settings and settings['email_alerts'] %}checked{% endif %} />
+              <span>Email alerts</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="inApp" {% if settings and settings['in_app_alerts'] %}checked{% endif %} />
+              <span>In-app alerts</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="pedigreeUpdates" {% if settings and settings['pedigree_updates'] %}checked{% endif %} />
+              <span>Pedigree updates</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="reminders" {% if settings and settings['reminders'] %}checked{% endif %} />
+              <span>Reminders</span>
+            </label>
+            <div class="form-actions">
+              <button type="submit">Save Notifications</button>
+            </div>
+          </form>
+        </article>
+      </section>
+
+      <nav class="bottom-nav" aria-label="Primary">
+        <a class="nav-item" href="{{ url_for('homepage') }}">Home</a>
+        <a class="nav-item" href="{{ url_for('saved_dogs') }}">Saved Dogs</a>
+        <a class="nav-item" href="{{ url_for('pedigrees') }}">Pedigrees</a>
+        <a class="nav-item" href="{{ url_for('profile') }}">Profile</a>
+      </nav>
+    </main>
+  </body>
+</html>

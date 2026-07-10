@@ -1,4 +1,6 @@
 const STORAGE_KEY = "embark-state-v1";
+const USERS_STORAGE_KEY = "embark-users-v1";
+const SESSION_STORAGE_KEY = "embark-session-v1";
 
 const initialState = {
   dogs: [
@@ -103,6 +105,144 @@ function setStatus(element, message, isError = false) {
   if (!element) return;
   element.textContent = message;
   element.className = `form-status${isError ? " error" : ""}`;
+}
+
+function normalizeEmail(email) {
+  return email.trim().toLowerCase();
+}
+
+function passwordMeetsRequirements(password) {
+  return password.length >= 8 && /[A-Z]/.test(password) && /[^A-Za-z0-9]/.test(password);
+}
+
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function getStoredUsers() {
+  try {
+    return JSON.parse(localStorage.getItem(USERS_STORAGE_KEY)) || [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveStoredUsers(users) {
+  localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+}
+
+function getCurrentSession() {
+  try {
+    return JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY));
+  } catch (error) {
+    return null;
+  }
+}
+
+function setCurrentSession(user) {
+  localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(user));
+}
+
+function clearCurrentSession() {
+  localStorage.removeItem(SESSION_STORAGE_KEY);
+}
+
+function protectRoute() {
+  const currentPage = window.location.pathname.split("/").pop();
+  const protectedPages = ["homepage.html", "saved-dogs.html", "pedigrees.html", "profile.html", "notifications.html", "settings.html"];
+  const publicPages = ["login.html", "create-account.html", "index.html"];
+
+  if (protectedPages.includes(currentPage) && !getCurrentSession()) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (publicPages.includes(currentPage) && getCurrentSession() && currentPage !== "index.html") {
+    window.location.href = "homepage.html";
+  }
+}
+
+function bindAuthForms() {
+  const loginForm = document.getElementById("login-form");
+  const signupForm = document.getElementById("signup-form");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = document.getElementById("login-status");
+      const email = normalizeEmail(loginForm.email.value);
+      const password = loginForm.password.value;
+
+      const users = getStoredUsers();
+      const user = users.find((entry) => entry.email === email);
+
+      if (!user) {
+        setStatus(status, "No account found for that email.", true);
+        return;
+      }
+
+      const enteredHash = await hashPassword(password);
+      if (enteredHash !== user.passwordHash) {
+        setStatus(status, "Incorrect password.", true);
+        return;
+      }
+
+      setCurrentSession({ id: user.id, email: user.email, fullName: user.fullName });
+      setStatus(status, "Signing you in...");
+      window.location.href = "homepage.html";
+    });
+  }
+
+  if (signupForm) {
+    signupForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = document.getElementById("signup-status");
+      const fullName = signupForm.fullName.value.trim();
+      const email = normalizeEmail(signupForm.email.value);
+      const password = signupForm.password.value;
+      const confirmPassword = signupForm.confirmPassword.value;
+
+      if (!fullName) {
+        setStatus(status, "Please enter your full name.", true);
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setStatus(status, "Passwords do not match.", true);
+        return;
+      }
+
+      if (!passwordMeetsRequirements(password)) {
+        setStatus(status, "Password must be at least 8 characters, include one capital letter, and one special character.", true);
+        return;
+      }
+
+      const users = getStoredUsers();
+      if (users.some((entry) => entry.email === email)) {
+        setStatus(status, "An account with that email already exists.", true);
+        return;
+      }
+
+      const passwordHash = await hashPassword(password);
+      const newUser = {
+        id: Date.now(),
+        fullName,
+        email,
+        passwordHash,
+        createdAt: new Date().toISOString()
+      };
+
+      users.push(newUser);
+      saveStoredUsers(users);
+      setCurrentSession({ id: newUser.id, email: newUser.email, fullName: newUser.fullName });
+      setStatus(status, "Account created successfully. Redirecting...");
+      window.location.href = "homepage.html";
+    });
+  }
 }
 
 function renderDogList(container, mode) {
@@ -352,6 +492,8 @@ function bindAddDogForm() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  protectRoute();
+  bindAuthForms();
   renderDogList(document.getElementById("dog-list"), "home");
   renderDogList(document.getElementById("saved-dogs-list"), "saved");
   renderPedigreeList(document.getElementById("pedigree-list"));

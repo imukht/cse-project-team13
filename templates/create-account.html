@@ -4,18 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Account | Embark</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{{ url_for('style_css') }}" />
   </head>
   <body>
     <main class="page">
       <section class="login-card" aria-labelledby="signup-title">
         <div class="brand">
-          <img src="logo.png" alt="Embark logo" class="logo" />
+          <img src="{{ url_for('logo_png') }}" alt="Embark logo" class="logo" />
           <h1 id="signup-title">Create your account</h1>
           <p>Start your journey with Embark.</p>
         </div>
 
-        <form id="signup-form" class="login-form">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <p class="flash {{ category }}">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="post" class="login-form">
+          <p class="helper-text">Password must be at least 8 characters, include one capital letter, and one special character.</p>
           <label class="field">
             <span>Full Name</span>
             <input type="text" name="fullName" placeholder="Jane Doe" required />
@@ -37,12 +46,11 @@
           </label>
 
           <button type="submit">Create Account</button>
-          <p id="signup-status" class="form-status"></p>
         </form>
 
         <p class="footer-text">
           Already have an account?
-          <a href="login.html">Sign in</a>
+          <a href="{{ url_for('login') }}">Sign in</a>
         </p>
       </section>
     </main>

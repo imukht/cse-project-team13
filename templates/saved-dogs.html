@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saved Dogs | Embark</title>
+    <link rel="stylesheet" href="{{ url_for('style_css') }}" />
+  </head>
+  <body>
+    <main class="home-shell">
+      <header class="home-header">
+        <div class="brand-block">
+          <img src="{{ url_for('logo_png') }}" alt="Embark logo" class="logo" />
+          <div>
+            <p class="eyebrow">Saved Dogs</p>
+            <h1>Favorites</h1>
+          </div>
+        </div>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <p class="flash {{ category }}">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <section class="hero-card" aria-labelledby="saved-title">
+        <div>
+          <p class="eyebrow">Quick access</p>
+          <h2 id="saved-title">Keep your most important dog profiles close at hand.</h2>
+        </div>
+      </section>
+
+      <section class="dog-list" aria-label="Saved dog profiles">
+        {% for dog in dogs %}
+          <article class="dog-card">
+            <img src="{{ dog['photo'] }}" alt="{{ dog['name'] }}" />
+            <div class="dog-info">
+              <h3>{{ dog['name'] }}</h3>
+              <p><strong>Breed:</strong> {{ dog['breed'] }}</p>
+              <p><strong>Birthdate:</strong> {{ dog['birthdate'] }}</p>
+              <p><strong>Sex:</strong> {{ dog['sex'] }}</p>
+              <div class="card-actions">
+                <form method="post" action="{{ url_for('toggle_save', dog_id=dog['id']) }}" class="inline-form">
+                  <button type="submit" class="secondary-btn">Unsave</button>
+                </form>
+                <a class="secondary-btn inline-link" href="{{ url_for('pedigrees') }}">View Pedigree</a>
+              </div>
+            </div>
+          </article>
+        {% else %}
+          <p class="empty-state">No saved dogs yet.</p>
+        {% endfor %}
+      </section>
+
+      <nav class="bottom-nav" aria-label="Primary">
+        <a class="nav-item" href="{{ url_for('homepage') }}">Home</a>
+        <a class="nav-item active" href="{{ url_for('saved_dogs') }}">Saved Dogs</a>
+        <a class="nav-item" href="{{ url_for('pedigrees') }}">Pedigrees</a>
+        <a class="nav-item" href="{{ url_for('profile') }}">Profile</a>
+      </nav>
+    </main>
+  </body>
+</html>

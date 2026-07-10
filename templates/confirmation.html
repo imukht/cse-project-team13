@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Your Email | Embark</title>
+    <link rel="stylesheet" href="{{ url_for('style_css') }}" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="login-card" aria-labelledby="confirmation-title">
+        <div class="brand">
+          <img src="{{ url_for('logo_png') }}" alt="Embark logo" class="logo" />
+          <h1 id="confirmation-title">Almost there</h1>
+          <p>We’ve prepared your account for {{ email }}.</p>
+        </div>
+
+        <div class="info-card">
+          <p>Check your inbox for a verification email.</p>
+          <p>Once you verify, you can sign in and start using Embark.</p>
+          {% if email_sent %}
+            <p class="success">A verification link was sent to your email address.</p>
+          {% else %}
+            <p class="error">The email service is not configured, so here is the verification link for now:</p>
+            <a href="{{ verification_link }}">Complete verification</a>
+          {% endif %}
+          <p><a href="{{ url_for('login') }}">Back to sign in</a></p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

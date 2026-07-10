@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verified | Embark</title>
+    <link rel="stylesheet" href="{{ url_for('style_css') }}" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="login-card" aria-labelledby="verified-title">
+        <div class="brand">
+          <img src="{{ url_for('logo_png') }}" alt="Embark logo" class="logo" />
+          <h1 id="verified-title">Email verified</h1>
+          <p>Your account is ready to use.</p>
+        </div>
+
+        <div class="info-card">
+          <p>Your email address has been successfully verified.</p>
+          <p><a href="{{ url_for('login') }}">Sign in to continue</a></p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

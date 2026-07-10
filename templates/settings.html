@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings | Embark</title>
+    <link rel="stylesheet" href="{{ url_for('style_css') }}" />
+  </head>
+  <body>
+    <main class="home-shell">
+      <header class="home-header">
+        <div class="brand-block">
+          <img src="{{ url_for('logo_png') }}" alt="Embark logo" class="logo" />
+          <div>
+            <p class="eyebrow">Settings</p>
+            <h1>Preferences</h1>
+          </div>
+        </div>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <p class="flash {{ category }}">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <section class="hero-card" aria-labelledby="settings-title">
+        <div>
+          <p class="eyebrow">Customize your experience</p>
+          <h2 id="settings-title">Adjust your layout, alerts, and visibility preferences for your dog profiles.</h2>
+        </div>
+      </section>
+
+      <section class="dog-list" aria-label="Settings options">
+        <article class="info-card">
+          <h3>Preferences</h3>
+          <form method="post" class="editor-form">
+            <label>
+              <span>Display</span>
+              <select name="display">
+                <option value="Grid" {% if prefs and prefs['display'] == 'Grid' %}selected{% endif %}>Grid</option>
+                <option value="List" {% if prefs and prefs['display'] == 'List' %}selected{% endif %}>List</option>
+              </select>
+            </label>
+            <label>
+              <span>Privacy</span>
+              <select name="privacy">
+                <option value="Shared with breeder network" {% if prefs and prefs['privacy'] == 'Shared with breeder network' %}selected{% endif %}>Shared with breeder network</option>
+                <option value="Private" {% if prefs and prefs['privacy'] == 'Private' %}selected{% endif %}>Private</option>
+              </select>
+            </label>
+            <label>
+              <span>Default view</span>
+              <select name="defaultView">
+                <option value="Grid" {% if prefs and prefs['default_view'] == 'Grid' %}selected{% endif %}>Grid</option>
+                <option value="List" {% if prefs and prefs['default_view'] == 'List' %}selected{% endif %}>List</option>
+              </select>
+            </label>
+            <div class="form-actions">
+              <button type="submit">Save Preferences</button>
+            </div>
+          </form>
+        </article>
+      </section>
+
+      <nav class="bottom-nav" aria-label="Primary">
+        <a class="nav-item" href="{{ url_for('homepage') }}">Home</a>
+        <a class="nav-item" href="{{ url_for('saved_dogs') }}">Saved Dogs</a>
+        <a class="nav-item" href="{{ url_for('pedigrees') }}">Pedigrees</a>
+        <a class="nav-item" href="{{ url_for('profile') }}">Profile</a>
+      </nav>
+    </main>
+  </body>
+</html>
