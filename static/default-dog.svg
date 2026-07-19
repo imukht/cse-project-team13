@@ -1,10 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
-  <rect width="400" height="300" rx="24" fill="#f7f7e8"/>
-  <circle cx="200" cy="118" r="72" fill="#d8b37b"/>
-  <rect x="124" y="162" width="152" height="78" rx="38" fill="#8c5a2b"/>
-  <rect x="148" y="110" width="24" height="40" rx="10" fill="#5f3d1d"/>
-  <rect x="228" y="110" width="24" height="40" rx="10" fill="#5f3d1d"/>
-  <path d="M168 104c10-22 54-22 64 0" stroke="#5f3d1d" stroke-width="10" stroke-linecap="round" fill="none"/>
-  <path d="M134 192c24 14 108 14 132 0" stroke="#6b4b26" stroke-width="10" stroke-linecap="round" fill="none"/>
-  <text x="200" y="264" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="26" fill="#90c226">Default dog photo</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img">
+<title>Default dog photo</title>
+<desc>Cartoon illustration of a brown and cream dog face with big eyes, a dark nose, an open mouth with tongue sticking out and whiskers, on a uniform light green background, captioned "Default dog photo".</desc>
+<rect x="0" y="0" width="400" height="300" rx="24" fill="#d9eec9"/>
+<g transform="translate(66.6667,0) scale(0.333333)">
+<path d="M 400 90 C 300 90 230 140 200 230 C 150 230 90 300 80 380 C 70 460 110 520 170 560 C 160 600 170 650 210 680 L 210 700 L 590 700 L 590 680 C 630 650 640 600 630 560 C 690 520 730 460 720 380 C 710 300 650 230 600 230 C 570 140 500 90 400 90 Z" fill="#d98c3f" stroke="#1c140d" stroke-width="8" stroke-linejoin="round"/>
+<path d="M 150 260 C 130 320 120 380 140 430" fill="none" stroke="#1c140d" stroke-width="7" stroke-linecap="round"/>
+<path d="M 650 260 C 670 320 680 380 660 430" fill="none" stroke="#1c140d" stroke-width="7" stroke-linecap="round"/>
+<path d="M 385 100 C 375 150 370 220 385 280 C 375 320 370 370 385 410 L 415 410 C 430 370 425 320 415 280 C 430 220 425 150 415 100 Z" fill="#f5e6c8" stroke="#1c140d" stroke-width="8" stroke-linejoin="round"/>
+<path d="M 250 272 Q 290 250 330 270" fill="none" stroke="#1c140d" stroke-width="7" stroke-linecap="round"/>
+<path d="M 470 270 Q 510 250 550 272" fill="none" stroke="#1c140d" stroke-width="7" stroke-linecap="round"/>
+<circle cx="300" cy="345" r="58" fill="#241b14" stroke="#1c140d" stroke-width="6"/>
+<circle cx="500" cy="345" r="58" fill="#241b14" stroke="#1c140d" stroke-width="6"/>
+<circle cx="286" cy="328" r="15" fill="#f5e6c8"/>
+<circle cx="486" cy="328" r="15" fill="#f5e6c8"/>
+<circle cx="308" cy="360" r="6" fill="#f5e6c8"/>
+<circle cx="508" cy="360" r="6" fill="#f5e6c8"/>
+<path d="M 340 440 C 340 410 370 400 400 400 C 430 400 460 410 460 440 C 470 460 460 490 430 505 C 415 515 385 515 370 505 C 340 490 330 460 340 440 Z" fill="#241f1c" stroke="#1c140d" stroke-width="8" stroke-linejoin="round"/>
+<ellipse cx="378" cy="465" rx="9" ry="11" fill="#100d0a"/>
+<ellipse cx="422" cy="465" rx="9" ry="11" fill="#100d0a"/>
+<path d="M 220 520 L 260 505" fill="none" stroke="#1c140d" stroke-width="4" stroke-linecap="round"/>
+<path d="M 230 540 L 275 530" fill="none" stroke="#1c140d" stroke-width="4" stroke-linecap="round"/>
+<path d="M 245 560 L 288 550" fill="none" stroke="#1c140d" stroke-width="4" stroke-linecap="round"/>
+<path d="M 580 520 L 540 505" fill="none" stroke="#1c140d" stroke-width="4" stroke-linecap="round"/>
+<path d="M 570 540 L 525 530" fill="none" stroke="#1c140d" stroke-width="4" stroke-linecap="round"/>
+<path d="M 555 560 L 512 550" fill="none" stroke="#1c140d" stroke-width="4" stroke-linecap="round"/>
+<path d="M 250 520 C 300 580 350 592 400 588 C 450 592 500 580 550 520" fill="none" stroke="#1c140d" stroke-width="9" stroke-linecap="round"/>
+<path d="M 372 525 C 372 545 385 558 400 560 C 415 558 428 545 428 525 Z" fill="#1a1310" stroke="#1c140d" stroke-width="6" stroke-linejoin="round"/>
+<path d="M 290 630 C 300 612 320 602 340 615 C 355 598 380 594 400 612 C 420 594 445 598 460 615 C 480 602 500 612 510 630 C 520 648 515 668 505 700 L 295 700 C 285 668 280 648 290 630 Z" fill="#f5e6c8" stroke="#1c140d" stroke-width="8" stroke-linejoin="round"/>
+<path d="M 372 545 C 368 565 368 585 380 598 C 388 606 412 606 420 598 C 432 585 432 565 428 545 C 415 553 385 553 372 545 Z" fill="#ef9f9a" stroke="#1c140d" stroke-width="8" stroke-linejoin="round"/>
+<path d="M 400 552 L 400 598" fill="none" stroke="#dd8f89" stroke-width="5" stroke-linecap="round"/>
+</g>
+<text x="200" y="272" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#0a0a0a">Default dog photo</text>
 </svg>
