@@ -8,10 +8,15 @@ Project Name: Embark
 
 Features:
 Account management — Account creation, secure login/logout, password recovery flow
+
 Dog profiles — add, edit, and delete dog records with name, breed, birthdate, sex, and photo (upload or URL)
+
 Pedigree tracking — record a dog's father, mother, and free-form notes on lineage/bloodline
+
 Saved Dogs — mark dogs as favorites for quick access
+
 Notifications & Settings — per-user preferences for alerts and display options
+
 
 
 Run Requirements:
@@ -23,8 +28,11 @@ Run Requirements:
 
 Instructions for use:
 1. Clone the repository
+   
    git clone https://github.com/imukht/cse-project-team13.git
+   
    cd cse-project-team13
+
    
    **OR**
 
@@ -33,24 +41,33 @@ Instructions for use:
 
 Steps 2-5 are completed in the IDE terminal.
 
-2. Create a virtual environment
+2. Create a virtual environment with the command:
+3. 
   **python -m venv .venv** _or_ **py -m venv .venv**
 
-3. Activate the virtual environment with the command:
+
+4. Activate the virtual environment with the command:
+   
    Windows: **.venv\Scripts\Activate.ps1**
+   
    Mac/Linux: **source .venv/bin/activate**
 
-4. Install Flask with the command
+
+6. Install Flask with the command:
+   
    **pip install flask**
 
-5. Run the app witht the command:
+
+8. Run the app witht the command:
+   
    **python app.py** _or_ **py app.py**
 
 
-6. Open a browser (built-in or external), paste in and go to the following address:
+10. Open a browser (built-in or external), paste in and go to the following address:
+    
    **http://127.0.0.1:5000**
 
-7. To stop the server, go back to the terminal and press Ctrl+C
+12. To stop the server, go back to the terminal and press Ctrl+C
 
 
 
