@@ -174,15 +174,15 @@ def init_db():
             (demo_user_id, "Grid", "Shared with breeder network", "Grid"),
         )
         db.execute(
-            "INSERT INTO dogs (owner_id, name, breed, birthdate, sex, photo, is_saved, father, mother, notes, traits, registration_number, breeder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (demo_user_id, "Sunny", "Golden Retriever", "2021-05-14", "Female", "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80", 1, "Cedar Ridge Atlas", "Willow Creek Nova", "Strong working lineage with award-winning siblings.", "Friendly, high energy, food motivated", "AKC-SR12345601", "Cedar Ridge Kennels""),
+            "INSERT INTO dogs (owner_id, name, breed, birthdate, sex, photo, is_saved, father, mother, notes, traits, registration_number, breeder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (demo_user_id, "Sunny", "Golden Retriever", "2021-05-14", "Female", "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80", 1, "Cedar Ridge Atlas", "Willow Creek Nova", "Strong working lineage with award-winning siblings.", "Friendly, high energy, food motivated", "AKC-SR12345601", "Cedar Ridge Kennels"),
         )
         db.execute(
-            "INSERT INTO dogs (owner_id, name, breed, birthdate, sex, photo, is_saved, father, mother, notes, traits, registration_number, breeder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO dogs (owner_id, name, breed, birthdate, sex, photo, is_saved, father, mother, notes, traits, registration_number, breeder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (demo_user_id, "Rex", "Labrador Retriever", "2019-09-02", "Male", "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&w=900&q=80", 1, "Summit Harbor Ranger", "Meadowfield Bella", "Balanced temperament and excellent field record.", "Calm, strong retrieving drive", "AKC-SR98765402", "Summit Harbor Retrievers"),
         )
         db.execute(
-            "INSERT INTO dogs (owner_id, name, breed, birthdate, sex, photo, is_saved, father, mother, notes, traits, registration_number, breeder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO dogs (owner_id, name, breed, birthdate, sex, photo, is_saved, father, mother, notes, traits, registration_number, breeder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (demo_user_id, "Mia", "Bernese Mountain Dog", "2020-11-21", "Female", "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80", 0, "Northstar Bruno", "Snowline Tessa", "Gentle family dog with strong structure.", "Gentle, good with children", "AKC-SR45678903", "Northstar Bernese"),
         )
         db.commit()
@@ -426,7 +426,7 @@ def homepage():
 
     db = get_db()
     dogs = db.execute("SELECT * FROM dogs WHERE owner_id = ? ORDER BY id DESC", (session["user_id"],)).fetchall()
-    returnreturn render_template( "homepage.html", dogs=dogs, breed_options=BREED_OPTIONS, active_page="home", today=date.today().isoformat())
+    return render_template( "homepage.html", dogs=dogs, breed_options=BREED_OPTIONS, active_page="home", today=date.today().isoformat())
 
 
 @app.route("/saved-dogs")
@@ -528,7 +528,7 @@ def profile():
                 updates.append("email = ?")
                 values.append(new_email)
             if new_password:
-               updates.append("password_hash = ?")
+                updates.append("password_hash = ?")
                 values.append(generate_password_hash(new_password))
             if updates:
                 values.extend([session["user_id"]])
@@ -594,8 +594,8 @@ def edit_dog(dog_id):
     db = get_db()
     existing = db.execute("SELECT photo, birthdate FROM dogs WHERE id = ? AND owner_id = ?", (dog_id, session["user_id"])).fetchone()
     if not existing:
-    flash("Dog profile not found.", "error")
-    return redirect(request.referrer or url_for("homepage"))
+        flash("Dog profile not found.", "error")
+        return redirect(request.referrer or url_for("homepage"))
 
     birthdate_input = request.form.get("birthdate", "")
     parsed_birthdate, birthdate_error = validate_birthdate(birthdate_input)
@@ -609,7 +609,7 @@ def edit_dog(dog_id):
         photo_value = request.form.get("photo", "").strip() or (existing["photo"] if existing else DEFAULT_DOG_PHOTO)
 
     db.execute(
-        "UPDATE dogs SET name = ?, breed = ?, birthdate = ?, sex = ?, photo = ?, traits = ?, registration_number = ?, breeder = ?",
+        "UPDATE dogs SET name = ?, breed = ?, birthdate = ?, sex = ?, photo = ?, traits = ?, registration_number = ?, breeder = ? WHERE id = ? AND owner_id = ?",
         (
             request.form.get("name", "").strip(),
             request.form.get("breed", "").strip(),
