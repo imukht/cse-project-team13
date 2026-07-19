@@ -239,6 +239,149 @@ button:hover {
   color: #90c226;
 }
 
+.selected-card {
+  border-color: #6f8f17;
+  box-shadow: 0 12px 30px rgba(144, 194, 38, 0.2);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f4fbe3;
+  color: #6f8f17;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pedigree-summary {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid rgba(144, 194, 38, 0.24);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f9fdf2 0%, #f1f8d8 100%);
+  margin-bottom: 12px;
+}
+
+.family-tree {
+  display: grid;
+  gap: 10px;
+}
+
+.family-tree-multi {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.family-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.family-branch-children {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+}
+
+.family-branch-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+}
+
+.family-branch-connector {
+  width: 2px;
+  height: 12px;
+  background: linear-gradient(180deg, #90c226 0%, #c5e06e 100%);
+}
+
+.generation-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 2px 0;
+}
+
+.generation-divider::before,
+.generation-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #90c226 50%, transparent 100%);
+}
+
+.generation-divider span {
+  padding: 0 8px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #6f8f17;
+  font-weight: 700;
+}
+
+.family-node {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  text-align: center;
+  padding: 12px 10px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(144, 194, 38, 0.25);
+  box-shadow: 0 6px 16px rgba(144, 194, 38, 0.08);
+}
+
+.family-node-parent {
+  background: #f4fbe3;
+}
+
+.family-node-root {
+  background: #ffffff;
+  border-color: #90c226;
+  box-shadow: 0 10px 24px rgba(144, 194, 38, 0.16);
+}
+
+.family-node-selected {
+  border-color: #6f8f17;
+  background: linear-gradient(135deg, #f9fdf2 0%, #ffffff 100%);
+  box-shadow: 0 14px 28px rgba(144, 194, 38, 0.24);
+  transform: scale(1.03);
+}
+
+.family-role {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #6f8f17;
+  font-weight: 700;
+}
+
+.family-connector {
+  height: 2px;
+  background: linear-gradient(90deg, #90c226 0%, #c5e06e 100%);
+  border-radius: 999px;
+}
+
+.notes-box {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px dashed rgba(144, 194, 38, 0.3);
+  color: #5d6b1b;
+  margin-top: 8px;
+}
+
 .editor-form {
   display: grid;
   gap: 10px;
@@ -410,6 +553,19 @@ button:hover {
 
   .dog-card img {
     height: 180px;
+  }
+
+  .family-tree {
+    grid-template-columns: 1fr;
+  }
+
+  .family-branch-children {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .family-connector {
+    display: none;
   }
 
   .bottom-nav {

@@ -61,7 +61,11 @@
           </label>
           <label>
             <span>Sex</span>
-            <input type="text" name="sex" required />
+            <select name="sex" required>
+              <option value="">Select sex</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
           </label>
           <label>
             <span>Upload Photo</span>
@@ -96,7 +100,7 @@
                 <form method="post" action="{{ url_for('toggle_save', dog_id=dog['id']) }}" class="inline-form">
                   <button type="submit" class="secondary-btn">{{ 'Unsave' if dog['is_saved'] else 'Save Dog' }}</button>
                 </form>
-                <a class="secondary-btn inline-link" href="{{ url_for('pedigrees') }}">View Pedigree</a>
+                <a class="secondary-btn inline-link" href="{{ url_for('pedigrees', selected_dog=dog['id']) }}">View Pedigree</a>
                 <form method="post" action="{{ url_for('delete_dog', dog_id=dog['id']) }}" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this dog profile?');">
                   <button type="submit" class="secondary-btn small-btn">Delete</button>
                 </form>
@@ -116,7 +120,10 @@
                 </label>
                 <label>
                   <span>Sex</span>
-                  <input type="text" name="sex" value="{{ dog['sex'] }}" required />
+                  <select name="sex" required>
+                    <option value="Male" {% if dog['sex'] == 'Male' %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if dog['sex'] == 'Female' %}selected{% endif %}>Female</option>
+                  </select>
                 </label>
                 <label>
                   <span>Upload New Photo</span>

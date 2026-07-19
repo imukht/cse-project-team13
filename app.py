@@ -408,7 +408,40 @@ def saved_dogs():
 def pedigrees():
     db = get_db()
     dogs = db.execute("SELECT * FROM dogs WHERE owner_id = ? ORDER BY id DESC", (session["user_id"],)).fetchall()
-    return render_template("pedigrees.html", dogs=dogs, active_page="pedigrees")
+    selected_dog_id = request.args.get("selected_dog", type=int)
+
+    def build_branch(dog, depth=0):
+        if depth >= 3:
+            return None
+
+        parent_entries = []
+        father_name = dog["father"].strip() if dog["father"] else ""
+        mother_name = dog["mother"].strip() if dog["mother"] else ""
+
+        if father_name:
+            father_dog = next((item for item in dogs if item["name"] == father_name), None)
+            if father_dog:
+                parent_entries.append(("Father", father_dog, build_branch(father_dog, depth + 1)))
+        if mother_name:
+            mother_dog = next((item for item in dogs if item["name"] == mother_name), None)
+            if mother_dog:
+                parent_entries.append(("Mother", mother_dog, build_branch(mother_dog, depth + 1)))
+
+        return {
+            "dog": dog,
+            "depth": depth,
+            "parents": parent_entries,
+        }
+
+    pedigree_trees = {dog["id"]: build_branch(dog) for dog in dogs}
+
+    return render_template(
+        "pedigrees.html",
+        dogs=dogs,
+        active_page="pedigrees",
+        selected_dog_id=selected_dog_id,
+        pedigree_trees=pedigree_trees,
+    )
 
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -573,23 +606,53 @@ def toggle_save(dog_id):
     return redirect(request.referrer or url_for("homepage"))
 
 
-@app.route("/dogs/<int:dog_id>/pedigree", methods=["POST"])
+@app.route("/pedigrees/<int:dog_id>/relationships", methods=["POST"])
 @login_required
-def update_pedigree(dog_id):
+def update_pedigree_relationships(dog_id):
     db = get_db()
+    dog = db.execute("SELECT id FROM dogs WHERE id = ? AND owner_id = ?", (dog_id, session["user_id"])).fetchone()
+    if not dog:
+        flash("Dog profile not found.", "error")
+        return redirect(url_for("pedigrees"))
+
+    father_id = request.form.get("father_id", "").strip()
+    mother_id = request.form.get("mother_id", "").strip()
+    notes = request.form.get("notes", "").strip()
+
+    if father_id and mother_id and father_id == mother_id:
+        flash("Please choose different dogs for father and mother.", "error")
+        return redirect(url_for("pedigrees", selected_dog=dog_id))
+
+    if father_id == str(dog_id) or mother_id == str(dog_id):
+        flash("A dog cannot be linked as its own parent.", "error")
+        return redirect(url_for("pedigrees", selected_dog=dog_id))
+
+    father_name = ""
+    mother_name = ""
+
+    if father_id:
+        father_dog = db.execute("SELECT id, name FROM dogs WHERE id = ? AND owner_id = ?", (father_id, session["user_id"])).fetchone()
+        if father_dog:
+            father_name = father_dog["name"]
+
+    if mother_id:
+        mother_dog = db.execute("SELECT id, name FROM dogs WHERE id = ? AND owner_id = ?", (mother_id, session["user_id"])).fetchone()
+        if mother_dog:
+            mother_name = mother_dog["name"]
+
     db.execute(
         "UPDATE dogs SET father = ?, mother = ?, notes = ? WHERE id = ? AND owner_id = ?",
-        (
-            request.form.get("father", "").strip(),
-            request.form.get("mother", "").strip(),
-            request.form.get("notes", "").strip(),
-            dog_id,
-            session["user_id"],
-        ),
+        (father_name, mother_name, notes, dog_id, session["user_id"]),
     )
     db.commit()
     flash("Pedigree updated.", "success")
-    return redirect(request.referrer or url_for("pedigrees"))
+    return redirect(url_for("pedigrees", selected_dog=dog_id))
+
+
+@app.route("/dogs/<int:dog_id>/pedigree", methods=["POST"])
+@login_required
+def update_pedigree(dog_id):
+    return update_pedigree_relationships(dog_id)
 
 
 @app.route("/style.css")

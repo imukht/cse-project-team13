@@ -35,26 +35,69 @@
 
       <section class="dog-list" aria-label="Pedigree summaries">
         {% for dog in dogs %}
-          <article class="info-card">
-            <h3>{{ dog['name'] }}</h3>
-            <p><strong>Father:</strong> {{ dog['father'] or 'Not listed' }}</p>
-            <p><strong>Mother:</strong> {{ dog['mother'] or 'Not listed' }}</p>
-            <p><strong>Notes:</strong> {{ dog['notes'] or 'No notes yet.' }}</p>
-            <form method="post" action="{{ url_for('update_pedigree', dog_id=dog['id']) }}" class="editor-form">
+          <article class="info-card{% if selected_dog_id == dog['id'] %} selected-card{% endif %}">
+            <div class="card-header">
+              <div>
+                <h3>{{ dog['name'] }}</h3>
+                <p class="helper-text">Add existing dogs as this profile's parents.</p>
+              </div>
+              <span class="pill">{{ dog['breed'] }}</span>
+            </div>
+
+            <div class="pedigree-summary">
+              {% set branch = pedigree_trees.get(dog['id']) %}
+              {% if branch %}
+                <div class="family-tree family-tree-multi">
+                  {% include 'partials/pedigree_branch.html' %}
+                </div>
+              {% else %}
+                <div class="family-tree">
+                  <div class="family-node family-node-parent">
+                    <span class="family-role">Father</span>
+                    <strong>{{ dog['father'] or 'Not linked yet' }}</strong>
+                  </div>
+                  <div class="family-connector" aria-hidden="true"></div>
+                  <div class="family-node family-node-root{% if selected_dog_id == dog['id'] %} family-node-selected{% endif %}">
+                    <span class="family-role">Root</span>
+                    <strong>{{ dog['name'] }}</strong>
+                  </div>
+                  <div class="family-connector" aria-hidden="true"></div>
+                  <div class="family-node family-node-parent">
+                    <span class="family-role">Mother</span>
+                    <strong>{{ dog['mother'] or 'Not linked yet' }}</strong>
+                  </div>
+                </div>
+              {% endif %}
+              <div class="notes-box">
+                <strong>Notes:</strong> {{ dog['notes'] or 'No notes yet.' }}
+              </div>
+            </div>
+
+            <form method="post" action="{{ url_for('update_pedigree_relationships', dog_id=dog['id']) }}" class="editor-form">
               <label>
                 <span>Father</span>
-                <input type="text" name="father" value="{{ dog['father'] }}" />
+                <select name="father_id">
+                  <option value="">No father selected</option>
+                  {% for other_dog in dogs if other_dog['id'] != dog['id'] and other_dog['sex'] == 'Male' %}
+                    <option value="{{ other_dog['id'] }}" {% if dog['father'] and dog['father'] == other_dog['name'] %}selected{% endif %}>{{ other_dog['name'] }} ({{ other_dog['breed'] }})</option>
+                  {% endfor %}
+                </select>
               </label>
               <label>
                 <span>Mother</span>
-                <input type="text" name="mother" value="{{ dog['mother'] }}" />
+                <select name="mother_id">
+                  <option value="">No mother selected</option>
+                  {% for other_dog in dogs if other_dog['id'] != dog['id'] and other_dog['sex'] == 'Female' %}
+                    <option value="{{ other_dog['id'] }}" {% if dog['mother'] and dog['mother'] == other_dog['name'] %}selected{% endif %}>{{ other_dog['name'] }} ({{ other_dog['breed'] }})</option>
+                  {% endfor %}
+                </select>
               </label>
               <label>
                 <span>Notes</span>
                 <textarea name="notes">{{ dog['notes'] }}</textarea>
               </label>
               <div class="form-actions">
-                <button type="submit">Save</button>
+                <button type="submit">Save pedigree</button>
               </div>
             </form>
           </article>

@@ -46,7 +46,7 @@
                 <form method="post" action="{{ url_for('toggle_save', dog_id=dog['id']) }}" class="inline-form">
                   <button type="submit" class="secondary-btn">Unsave</button>
                 </form>
-                <a class="secondary-btn inline-link" href="{{ url_for('pedigrees') }}">View Pedigree</a>
+                <a class="secondary-btn inline-link" href="{{ url_for('pedigrees', selected_dog=dog['id']) }}">View Pedigree</a>
                 <form method="post" action="{{ url_for('delete_dog', dog_id=dog['id']) }}" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this dog profile?');">
                   <button type="submit" class="secondary-btn small-btn">Delete</button>
                 </form>

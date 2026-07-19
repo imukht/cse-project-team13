@@ -1,0 +1,29 @@
+{% macro render_branch(branch, depth=0) %}
+  <div class="family-branch{% if depth > 0 %} family-branch-nested{% endif %}">
+    <div class="family-node family-node-root{% if selected_dog_id == branch.dog['id'] %} family-node-selected{% endif %}">
+      <span class="family-role">{{ 'Root' if depth == 0 else 'Ancestor' }}</span>
+      <strong>{{ branch.dog['name'] }}</strong>
+    </div>
+    {% if branch.parents %}
+      <div class="generation-divider">
+        <span>Generation {{ depth + 2 }}</span>
+      </div>
+      <div class="family-branch-children">
+        {% for role, parent_dog, child_branch in branch.parents %}
+          <div class="family-branch-child">
+            <div class="family-node family-node-parent">
+              <span class="family-role">{{ role }}</span>
+              <strong>{{ parent_dog['name'] }}</strong>
+            </div>
+            {% if child_branch %}
+              <div class="family-branch-connector" aria-hidden="true"></div>
+              {{ render_branch(child_branch, depth + 1) }}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{{ render_branch(branch) }}
