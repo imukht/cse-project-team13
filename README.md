@@ -34,20 +34,21 @@ Instructions for use:
 Steps 2-5 are completed in the IDE terminal.
 
 2. Create a virtual environment
-   py -m venv .venv
+  **python -m venv .venv** _or_ **py -m venv .venv**
 
-3. Activate the virtual environment
-   Windows: .venv\Scripts\Activate.ps1
-   Mac/Linux: source .venv/bin/activate
+3. Activate the virtual environment with the command:
+   Windows: **.venv\Scripts\Activate.ps1**
+   Mac/Linux: **source .venv/bin/activate**
 
-4. Install Flask
-   pip install flask
+4. Install Flask with the command
+   **pip install flask**
 
-5. Run the app
-   python app.py or py app.py
+5. Run the app witht the command:
+   **python app.py** _or_ **py app.py**
 
-6. Open your browser (built-in or external) and go to
-   http://127.0.0.1:5000
+
+6. Open a browser (built-in or external), paste in and go to the following address:
+   **http://127.0.0.1:5000**
 
 7. To stop the server, go back to the terminal and press Ctrl+C
 
