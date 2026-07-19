@@ -546,6 +546,20 @@ def edit_dog(dog_id):
     flash("Dog information updated.", "success")
     return redirect(request.referrer or url_for("homepage"))
 
+@app.route("/dogs/<int:dog_id>/delete", methods=["POST"])
+@login_required
+def delete_dog(dog_id):
+    db = get_db()
+    dog = db.execute("SELECT id FROM dogs WHERE id = ? AND owner_id = ?", (dog_id, session["user_id"])).fetchone()
+    if not dog:
+        flash("Dog profile not found.", "error")
+        return redirect(request.referrer or url_for("homepage"))
+
+    db.execute("DELETE FROM dogs WHERE id = ? AND owner_id = ?", (dog_id, session["user_id"]))
+    db.execute("UPDATE users SET dogs_count = MAX(dogs_count - 1, 0) WHERE id = ?", (session["user_id"],))
+    db.commit()
+    flash("Dog profile removed.", "success")
+    return redirect(request.referrer or url_for("homepage"))
 
 @app.route("/dogs/<int:dog_id>/save", methods=["POST"])
 @login_required
