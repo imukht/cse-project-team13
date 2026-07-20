@@ -433,9 +433,11 @@ def homepage():
 @login_required
 def saved_dogs():
     db = get_db()
-    dogs = db.execute("SELECT * FROM dogs WHERE owner_id = ? AND is_saved = 1 ORDER BY id DESC", (session["user_id"],)).fetchall()
+    dogs = db.execute(
+        "SELECT * FROM dogs WHERE owner_id = ? ORDER BY id DESC",
+        (session["user_id"],)
+    ).fetchall()
     return render_template("saved-dogs.html", dogs=dogs, active_page="saved")
-
 
 @app.route("/pedigrees")
 @login_required
@@ -646,13 +648,29 @@ def delete_dog(dog_id):
 @login_required
 def toggle_save(dog_id):
     db = get_db()
-    dog = db.execute("SELECT is_saved FROM dogs WHERE id = ? AND owner_id = ?", (dog_id, session["user_id"])).fetchone()
-    if dog:
-        db.execute("UPDATE dogs SET is_saved = ? WHERE id = ? AND owner_id = ?", (0 if dog["is_saved"] else 1, dog_id, session["user_id"]))
-        db.commit()
+
+    dog = db.execute(
+        "SELECT is_saved FROM dogs WHERE id = ? AND owner_id = ?", (dog_id, session["user_id"]),).fetchone()
+
+    wants_json = request.headers.get("X-Requested-With") == "XMLHttpRequest"
+
+    if not dog:
+        if wants_json:
+            return {"error": "Dog profile not found."}, 404
+        flash("Dog profile not found.", "error")
+        return redirect(request.referrer or url_for("homepage"))
+
+    new_saved = 0 if dog["is_saved"] else 1
+
+    db.execute(
+        "UPDATE dogs SET is_saved = ? WHERE id = ? AND owner_id = ?", (new_saved, dog_id, session["user_id"]))
+    db.commit()
+
+    if wants_json:
+        return {"is_saved": bool(new_saved)}
+        
     flash("Dog saved state updated.", "success")
     return redirect(request.referrer or url_for("homepage"))
-
 
 @app.route("/pedigrees/<int:dog_id>/relationships", methods=["POST"])
 @login_required
