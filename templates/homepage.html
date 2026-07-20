@@ -57,7 +57,7 @@
           </label>
           <label>
             <span>Birthdate</span>
-            <input type="date" name="birthdate" required />
+            <input type="date" name="birthdate" max="{{ today }}" required />
           </label>
           <label>
             <span>Sex</span>
@@ -66,6 +66,18 @@
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
+          </label>
+          <label>
+            <span>Traits</span>
+            <input type="text" name="traits" placeholder="e.g. Friendly, high energy, food motivated" />
+          </label>
+          <label>
+            <span>Registration Number</span>
+            <input type="text" name="registration_number" placeholder="e.g. AKC-SR12345601" />
+          </label>
+          <label>
+            <span>Breeder</span>
+            <input type="text" name="breeder" placeholder="e.g. Cedar Ridge Kennels" />
           </label>
           <label>
             <span>Upload Photo</span>
@@ -96,6 +108,9 @@
               <p><strong>Breed:</strong> {{ dog['breed'] }}</p>
               <p><strong>Birthdate:</strong> {{ dog['birthdate'] }}</p>
               <p><strong>Sex:</strong> {{ dog['sex'] }}</p>
+              <p><strong>Traits:</strong> {{ dog['traits'] }}</p>
+              <p><strong>Registration #:</strong> {{ dog['registration_number'] }}</p>
+              <p><strong>Breeder:</strong> {{ dog['breeder'] }}</p>
               <div class="card-actions">
                 <form method="post" action="{{ url_for('toggle_save', dog_id=dog['id']) }}" class="inline-form">
                   <button type="submit" class="secondary-btn">{{ 'Unsave' if dog['is_saved'] else 'Save Dog' }}</button>
@@ -116,7 +131,7 @@
                 </label>
                 <label>
                   <span>Birthdate</span>
-                  <input type="date" name="birthdate" value="{{ dog['birthdate'] }}" required />
+                  <input type="date" name="birthdate" value="{{ dog['birthdate'] }}" max="{{ today }}" required />
                 </label>
                 <label>
                   <span>Sex</span>
@@ -124,6 +139,18 @@
                     <option value="Male" {% if dog['sex'] == 'Male' %}selected{% endif %}>Male</option>
                     <option value="Female" {% if dog['sex'] == 'Female' %}selected{% endif %}>Female</option>
                   </select>
+                </label>
+                <label>
+                  <span>Traits</span>
+                  <input type="text" name="traits" value="{{ dog['traits'] }}" placeholder="e.g. Friendly, high energy, food motivated" />
+                </label>
+                <label>
+                  <span>Registration Number</span>
+                  <input type="text" name="registration_number" value="{{ dog['registration_number'] }}" placeholder="e.g. AKC-SR12345601" />
+                </label>
+                <label>
+                  <span>Breeder</span>
+                  <input type="text" name="breeder" value="{{ dog['breeder'] }}" placeholder="e.g. Cedar Ridge Kennels" />
                 </label>
                 <label>
                   <span>Upload New Photo</span>
