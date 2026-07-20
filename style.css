@@ -497,6 +497,35 @@ button:hover {
   border: 1px solid #90c226;
 }
 
+.favorite-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.favorite-btn .star-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.favorite-btn.favorited {
+  background: #90c226;
+  color: #ffffff;
+  border-color: #90c226;
+}
+
+.favorite-dogs-header {
+  margin: 0;
+  color: #90c226;
+  font-size: 1.1rem;
+}
+
+.dog-group {
+  display: grid;
+  gap: 16px;
+}
+
 .bottom-nav {
   display: flex;
   justify-content: space-around;
